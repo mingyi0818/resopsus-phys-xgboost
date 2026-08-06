@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# CatBoost / model temp
+catboost_info/
+src/catboost_info/
+
+# Raw data (download separately, see README §1)
+ResOpsUS_data/
+src/ResOpsUS_data/
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
