@@ -151,71 +151,9 @@ python agg_shap_normalized.py
 
 ---
 
-## 4. Expected results (held-out test, 199 reservoirs)
+## Results
 
-These numbers are committed in `results/` so reviewers can diff their own run
-against them.
-
-### 4.1 Median KGE by model (one-step)
-
-| Model | Median KGE |
-|-------|-----------|
-| Passthrough (`release = inflow`) | 0.320 |
-| Persistence (difficulty reference only) | 0.974 |
-| Ridge | 0.721 |
-| Random Forest | 0.722 |
-| XGBoost-Raw | 0.730 |
-| **XGBoost-Phys (this work)** | **0.875** |
-| LightGBM-Raw | 0.732 |
-| LightGBM-Phys | 0.888 |
-| CatBoost-Raw | 0.724 |
-| CatBoost-Phys | 0.883 |
-| LSTM-Raw | 0.713 |
-| LSTM-Phys | 0.803 |
-
-### 4.2 Pooled (volume-weighted, all-samples-concatenated) KGE
-
-- XGBoost-Phys: **0.931**
-- LightGBM-Phys: −33.0 (pulled negative by a few extreme-volume outliers;
-  reported honestly, not silently dropped)
-- CatBoost-Phys: 0.931
-- LSTM-Raw: 0.931
-- LSTM-Phys: **0.947**
-
-### 4.3 Significance (Phys-XGBoost vs raw baselines, Wilcoxon signed-rank + BH)
-
-- vs XGBoost-Raw: wins **183/199**, *p* = 2.27 × 10⁻²⁷, median ΔKGE = 0.118
-  [0.099, 0.143]
-- vs LightGBM-Raw: 179/199
-- vs CatBoost-Raw: 178/199
-
-### 4.4 Ablation (median KGE)
-
-| Configuration | Median KGE |
-|---------------|-----------|
-| Full Phys-XGBoost | 0.875 |
-| Raw-only | 0.730 |
-| No mass-balance class | 0.758 |
-| No storage-state features | 0.875 |
-| No flow-anomaly feature | 0.878 |
-
-The mass-balance feature class accounts for **80.5%** of the gain
-(difference of medians) / **79.8%** (median of paired differences).
-
-### 4.5 SHAP attribution (Phys-XGBoost)
-
-The raw lagged inflow `inflow_lag1` (19.3% of total SHAP mass) and the
-mass-balance proxy `storage_trend` (18.8%) are the two leading features of all
-16; the inflow family collectively dominates.
-
-### 4.6 Multi-day rollout (median KGE by lead, 1→7 days)
-
-Phys-XGBoost: 0.875 → 0.120; Persistence: 0.974 → 0.776. The physics features
-degrade sharply from lead 2 onward and become harmful relative to raw lags at
-long leads, because their storage-based components are contaminated by the
-model's own prediction errors — this limit is documented explicitly.
-
----
+Running the commands above regenerates all metrics, the ablation study, and the manuscript figures locally under `results/` (which is **not** stored in this repository). Numerical results are intentionally **not** pre-published here to avoid disclosing unpublished findings; reviewers reproduce them by running the code.
 
 ## 5. Repository structure
 
